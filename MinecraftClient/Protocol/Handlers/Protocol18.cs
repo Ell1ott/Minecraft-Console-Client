@@ -89,19 +89,19 @@ namespace MinecraftClient.Protocol.Handlers
             this.packetPalette = new PacketTypeHandler(protocolVersion, forgeInfo != null).GetTypeHandler();
             this.log = handler.GetLogger();
 
-            if (handler.GetTerrainEnabled() && protocolversion > MC1181Version)
+            if (handler.GetTerrainEnabled() && protocolversion > MC1182Version)
             {
                 log.Error(Translations.Get("extra.terrainandmovement_disabled"));
                 handler.SetTerrainEnabled(false);
             }
 
-            if (handler.GetInventoryEnabled() && (protocolversion < MC110Version || protocolversion > MC1181Version))
+            if (handler.GetInventoryEnabled() && (protocolversion < MC110Version || protocolversion > MC1182Version))
             {
                 log.Error(Translations.Get("extra.inventory_disabled"));
                 handler.SetInventoryEnabled(false);
             }
 
-            if (handler.GetEntityHandlingEnabled() && (protocolversion < MC110Version || protocolversion > MC1181Version))
+            if (handler.GetEntityHandlingEnabled() && (protocolversion < MC110Version || protocolversion > MC1182Version))
             {
                 log.Error(Translations.Get("extra.entity_disabled"));
                 handler.SetEntityHandlingEnabled(false);
@@ -112,7 +112,7 @@ namespace MinecraftClient.Protocol.Handlers
             {
                 if (protocolVersion > MC1181Version && handler.GetTerrainEnabled())
                     throw new NotImplementedException(Translations.Get("exception.palette.block"));
-                if (protocolVersion == MC1181Version)
+                if (protocolVersion == MC1182Version)
                     Block.Palette = new Palette117();
                 else if (protocolVersion >= MC116Version)
                     Block.Palette = new Palette116();
@@ -127,7 +127,7 @@ namespace MinecraftClient.Protocol.Handlers
             // Entity palette
             if (protocolversion >= MC113Version)
             {
-                if (protocolversion > MC1181Version && handler.GetEntityHandlingEnabled())
+                if (protocolversion > MC1182Version && handler.GetEntityHandlingEnabled())
                     throw new NotImplementedException(Translations.Get("exception.palette.entity"));
                 if (protocolversion >= MC117Version) 
                     entityPalette = new EntityPalette117(); 
@@ -146,9 +146,9 @@ namespace MinecraftClient.Protocol.Handlers
             // Item palette
             if (protocolversion >= MC1162Version)
             {
-                if (protocolversion > MC1181Version && handler.GetInventoryEnabled())
+                if (protocolversion > MC1182Version && handler.GetInventoryEnabled())
                     throw new NotImplementedException(Translations.Get("exception.palette.item"));
-                if (protocolversion == MC1181Version)
+                if (protocolversion == MC1182Version)
                     itemPalette = new ItemPalette118();
                 else if (protocolversion >= MC117Version)
                     itemPalette = new ItemPalette117();
@@ -337,7 +337,7 @@ namespace MinecraftClient.Protocol.Handlers
                             dataTypes.ReadNextString(packetData);         // Level Type - 1.15 and below
                         if (protocolversion >= MC114Version)
                             dataTypes.ReadNextVarInt(packetData);         // View distance - 1.14 and above
-                        if (protocolversion >= MC1181Version)
+                        if (protocolversion >= MC1182Version)
                             dataTypes.ReadNextVarInt(packetData);         // Simulation Distance - 1.18 and above
                         if (protocolversion >= MC18Version)
                             dataTypes.ReadNextBool(packetData);           // Reduced debug info - 1.8 and above
@@ -838,7 +838,7 @@ namespace MinecraftClient.Protocol.Handlers
 
                             int stateId = -1;
 
-                            if(protocolversion >= MC1181Version)
+                            if(protocolversion >= MC1182Version)
                                 stateId = dataTypes.ReadNextVarInt(packetData);
 
                             int elements = dataTypes.ReadNextVarInt(packetData);
@@ -859,7 +859,7 @@ namespace MinecraftClient.Protocol.Handlers
 
                             int stateId = -1;
 
-                            if(protocolversion >= MC1181Version)
+                            if(protocolversion >= MC1182Version)
                                 stateId = dataTypes.ReadNextVarInt(packetData);
 
                             short slotID = dataTypes.ReadNextShort(packetData);
@@ -1639,7 +1639,7 @@ namespace MinecraftClient.Protocol.Handlers
                     fields.AddRange(dataTypes.GetVarInt(mainHand));
                 if (protocolversion >= MC117Version)
                     fields.Add(0); // Enables text filtering. Always false
-                if (protocolversion >= MC1181Version)
+                if (protocolversion >= MC1182Version)
                     fields.Add(1); // 1.18 and above - Allow server listings
                 SendPacket(PacketTypesOut.ClientSettings, fields);
             }
